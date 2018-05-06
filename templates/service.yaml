@@ -1,3 +1,4 @@
+{{- $serviceName := include "paas-service.fullname" . -}}
 apiVersion: v1
 kind: Service
 metadata:
