@@ -25,7 +25,6 @@ spec:
             backend:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
-    {{- end -}}
   {{- if .Values.ingress.tls }}
   tls:
   - secretName: {{ .Values.ingress.tls.secretName }}
