@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $serviceName := include "config-service.fullname" . -}}
+{{- $serviceName := include "paas-service.fullname" . -}}
 {{- $servicePort := .Values.service.port -}}
 {{- $servicePath := .Values.ingress.path -}}
 apiVersion: extensions/v1beta1
