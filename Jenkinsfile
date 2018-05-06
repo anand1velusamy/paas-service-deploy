@@ -32,8 +32,8 @@ pipeline {
 	 stage ('Helm Install') {
 		steps {
 		  script {
-	        sh "wget https://storage.googleapis.com/kubernetes-helm/helm-v2.7.2-linux-amd64.tar.gz"
-          sh "tar -zxvf  helm-v2.7.2-linux-amd64.tar.gz"
+	        sh "wget https://storage.googleapis.com/kubernetes-helm/helm-v2.8.2-linux-amd64.tar.gz"
+          sh "tar -zxvf  helm-v2.8.2-linux-amd64.tar.gz"
 			    sh "mv linux-amd64/helm /usr/local/bin/helm"
 			    sh "helm init --upgrade"
         }
