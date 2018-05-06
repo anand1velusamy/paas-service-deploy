@@ -24,8 +24,8 @@ pipeline {
 
           // Print the entire blob
           echo prettyPrint(toJson(intuitPaas))
-
           writeYaml file: 'intuit-paas-update.yml', data: intuitPaas
+		  sh "ls -lsa" 
         }
       }
     
@@ -34,8 +34,8 @@ pipeline {
 	  stage ('Helm Install') {
 		steps {
 		  script {
-	        sh "wget https://storage.googleapis.com/kubernetes-helm/helm-v2.8.2-linux-amd64.tar.gz"
-            sh "tar -zxvf  helm-v2.8.2-linux-amd64.tar.gz"
+	        sh "wget https://storage.googleapis.com/kubernetes-helm/helm-v2.7.2-linux-amd64.tar.gz"
+            sh "tar -zxvf  helm-v2.7.2-linux-amd64.tar.gz"
 			sh "mv linux-amd64/helm /usr/local/bin/helm"
 			sh "helm init --upgrade"
       }
@@ -49,10 +49,8 @@ pipeline {
 			script {
 			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
 			}
-
-			echo "helm install --debug --name ${intuitPaas.gitflow.to.helm.name-dev} -f ${intuitPaas.gitflow.to.helm.values-dev} ${intuitPaas.gitflow.to.helm.sets} ."
 			  sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name-dev} -f ${intuitPaas.gitflow.to.helm.values-dev} ${intuitPaas.gitflow.to.helm.sets} ."
-		  
+	  
 		 }
 	   }	
 	}
