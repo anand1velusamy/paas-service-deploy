@@ -2,7 +2,11 @@ import static groovy.json.JsonOutput.*
 
 pipeline {
 
-  agent any
+  agent {
+    node {
+      label 'jnlp'
+    }
+}
 
   stages {
         stage('Intuit PaaS Properties') {
@@ -68,7 +72,6 @@ pipeline {
 
           echo prettyPrint(toJson(intuitPaas))
 
-          echo "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
           sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
 
           } 
