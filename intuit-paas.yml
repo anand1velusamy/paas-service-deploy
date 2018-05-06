@@ -12,5 +12,5 @@ gitflow:
       profiles: dev
       namespace: dev-cd97e9d
       image:
-        tag: anandvelusamy/docker-paas-repo/
+        tag: anandvelusamy/docker-paas-repo:latest
         key: image.repository

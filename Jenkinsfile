@@ -35,28 +35,21 @@ pipeline {
 		  when {
 			expression { fileExists('intuit-paas-update.yml') }
 		  }
-		  steps {
-			sh "cat intuit-paas-update.yml"
 
 			script {
 			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
 			}
 
-			echo prettyPrint(toJson(intuitPaas))
-
 			echo "heml install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values-dev} ${intuitPaas.gitflow.to.helm.sets} ."
 			sh "heml install --debug --name ${intuitPaas.gitflow.to.helm.name-dev} -f ${intuitPaas.gitflow.to.helm.values-dev} ${intuitPaas.gitflow.to.helm.sets} ."
-
-		  }
+		  
 		}
 		
 		stage('Deploy to QA') {
 		  when {
 			expression { fileExists('intuit-paas-update.yml') }
 		  }
-		  steps {
-			sh "cat intuit-paas-update.yml"
-
+		  
 			script {
 			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
 			}
@@ -66,7 +59,6 @@ pipeline {
 			echo "heml install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
 			sh "heml install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
 
-	   	    }
 		    }
 	    }
 	  }

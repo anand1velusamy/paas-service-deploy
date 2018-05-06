@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: anandvelusamy/docker-paas-repo/
+  repository: anandvelusamy/docker-paas-repo
   tag: latest
   pullPolicy: IfNotPresent
 
