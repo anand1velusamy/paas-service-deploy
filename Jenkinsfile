@@ -17,9 +17,9 @@ pipeline {
             intuitPaas = readYaml file: 'intuit-paas.yml'
             intuitPaas.gitflow.to.helm["values"] = "values.yaml"
             intuitPaas.gitflow.to.helm["values-dev"] = "values-dev.yml"
-			      intuitPaas.gitflow.to.helm["sets"] = "--set ${intuitPaas.gitflow.to.helm.image.key}=${intuitPaas.gitflow.to.helm.image.tag}"
+			intuitPaas.gitflow.to.helm["sets"] = "--set ${intuitPaas.gitflow.to.helm.image.key}=${intuitPaas.gitflow.to.helm.image.tag}"
             intuitPaas.gitflow.to.helm["name"] = "paas-service-qa"
-			      intuitPaas.gitflow.to.helm["name-dev"] = "paas-service-dev"
+			intuitPaas.gitflow.to.helm["name-dev"] = "paas-service-dev"
           }
 
           // Print the entire blob
@@ -40,8 +40,8 @@ pipeline {
 			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
 			}
 
-			echo "heml install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values-dev} ${intuitPaas.gitflow.to.helm.sets} ."
-			sh "heml install --debug --name ${intuitPaas.gitflow.to.helm.name-dev} -f ${intuitPaas.gitflow.to.helm.values-dev} ${intuitPaas.gitflow.to.helm.sets} ."
+			echo "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values-dev} ${intuitPaas.gitflow.to.helm.sets} ."
+			sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name-dev} -f ${intuitPaas.gitflow.to.helm.values-dev} ${intuitPaas.gitflow.to.helm.sets} ."
 		  
 		}
 	  }	
@@ -57,8 +57,8 @@ pipeline {
 
 			echo prettyPrint(toJson(intuitPaas))
 
-			echo "heml install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
-			sh "heml install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
+			echo "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
+			sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
 
 		    }
 		  }	
