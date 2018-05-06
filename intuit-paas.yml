@@ -1,0 +1,16 @@
+gitflow:
+  from:
+    git:
+      repo: https://github.intuit.com/services-config/config-service.git
+      sha: cd97e9da78bc8957c02d796313ee1efd466b6f05
+      branch: master
+      author:
+        name: Anand Velusamy
+        email: anand_velusamy@intuit.com
+  to:
+    helm:
+      profiles: dev
+      namespace: dev-cd97e9d
+      image:
+        tag: anandvelusamy/docker-paas-repo/
+        key: image.repository

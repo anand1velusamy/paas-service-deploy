@@ -1,0 +1,47 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "paas-service.fullname" . }}
+  labels:
+    app: {{ template "paas-service.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "paas-service.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "paas-service.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      imagePullSecrets:
+        - name: artifactory.intuit.com
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          #livenessProbe:
+          #  initialDelaySeconds: 90
+          #  periodSeconds: 5
+          #  httpGet:
+          #    path: {{ .Values.service.healthPath }}
+          #    port: {{ .Values.service.port }}
+          #readinessProbe:
+          #  initialDelaySeconds: 90
+          #  periodSeconds: 5
+          #  httpGet:
+          #    path: {{ .Values.service.healthPath }}
+          #    port: {{ .Values.service.port }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}

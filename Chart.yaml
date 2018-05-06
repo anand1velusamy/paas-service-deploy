@@ -1,0 +1,6 @@
+name: paas-service
+description: A Helm chart for Intuit Configuration service in Kubernetes.
+version: 1.0.0
+maintainers:
+  - name: Anand Velusamy
+    email: anand_velusamy@intuit.com

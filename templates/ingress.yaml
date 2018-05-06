@@ -1,0 +1,33 @@
+{{- if .Values.ingress.enabled -}}
+{{- $serviceName := include "paas-service.fullname" . -}}
+{{- $servicePort := .Values.service.port -}}
+{{- $servicePath := .Values.ingress.path -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "paas-service.fullname" . }}
+  labels:
+    app: {{ template "paas-service.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  rules:
+    {{- $host := .Values.ingress.hosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+          - path: {{ $servicePath }}
+            backend:
+              serviceName: {{ $serviceName }}
+              servicePort: {{ $servicePort }}
+    tls:
+  - secretName: {{ .Values.ingress.tls.secretName }}
+    hosts:  
+{{ toYaml .Values.ingress.hosts | indent 4 }}
+  {{- end -}}
+{{- end -}}
