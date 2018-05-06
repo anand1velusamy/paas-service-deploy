@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $serviceName := include "paas-service.fullname" . -}}
+{{- $serviceName := .Chart.Name -}}
 {{- $servicePort := .Values.service.port -}}
 {{- $servicePath := .Values.ingress.path -}}
 apiVersion: extensions/v1beta1
