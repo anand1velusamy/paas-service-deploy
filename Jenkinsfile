@@ -16,7 +16,7 @@ pipeline {
             // trim removes leading and trailing whitespace from the string
             intuitPaas = readYaml file: 'intuit-paas.yml'
             intuitPaas.gitflow.to.helm["values"] = "values.yaml"
-            intuitPaas.gitflow.to.helm["values-dev"] = "values-${intuitPaas.gitflow.to.helm.profiles}.yml"
+            intuitPaas.gitflow.to.helm["values-dev"] = "values-dev.yml"
 			      intuitPaas.gitflow.to.helm["sets"] = "--set ${intuitPaas.gitflow.to.helm.image.key}=${intuitPaas.gitflow.to.helm.image.tag}"
             intuitPaas.gitflow.to.helm["name"] = "paas-service-qa"
 			      intuitPaas.gitflow.to.helm["name-dev"] = "paas-service-dev"
