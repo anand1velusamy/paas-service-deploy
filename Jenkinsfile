@@ -39,20 +39,42 @@ pipeline {
         }
       }
 	  } 
-      stage('Deploy to Dev') {
-		  when {
-			expression { fileExists('intuit-paas-update.yml') }
-		  }
-     steps {
-			script {
-        sh "ls -lsa"  
-			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
-			}
-			  
-      sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.dev1} -f ${intuitPaas.gitflow.to.helm.dev} ${intuitPaas.gitflow.to.helm.sets} ."
-	  
-		 }
-	 }	
- 	}
+
+    stage('Multiple Environemnt Deployment') {
+      parallel{ 
+        stage('Deploy to Dev') {
+  		  when {
+  			expression { fileExists('intuit-paas-update.yml') }
+  		  }
+        steps {
+  			script {
+          sh "ls -lsa"  
+  			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
+  			}
+  			  
+        sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.dev1} -f ${intuitPaas.gitflow.to.helm.dev} ${intuitPaas.gitflow.to.helm.sets} ."
+  	  
+  		 }
+  	 }
+
+     stage('Deploy to QA') {
+          when {
+          expression { fileExists('intuit-paas-update.yml') }
+          }
+          steps {
+          script {
+            intuitPaas = readYaml file: 'intuit-paas-update.yml'
+          }
+
+          echo prettyPrint(toJson(intuitPaas))
+
+          echo "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
+          sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
+
+          } 
+        }
+      }  	
+    } 	
+  }
 }
  
