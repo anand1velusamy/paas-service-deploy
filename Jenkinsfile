@@ -30,8 +30,7 @@ pipeline {
       }
     
 	stage('Multiple Environemnt Deployment') {
-      parallel {
-		stage('Deploy to Dev') {
+      stage('Deploy to Dev') {
 		  when {
 			expression { fileExists('intuit-paas-update.yml') }
 		  }
@@ -45,24 +44,6 @@ pipeline {
 		  
 		}
 	  }	
-		
-		stage('Deploy to QA') {
-		  when {
-			expression { fileExists('intuit-paas-update.yml') }
-		  }
-		  steps {
-			script {
-			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
-			}
-
-			echo prettyPrint(toJson(intuitPaas))
-
-			echo "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
-			sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
-
-		    }
-		  }	
-	    }
-	  }
+	}
   }
 }
