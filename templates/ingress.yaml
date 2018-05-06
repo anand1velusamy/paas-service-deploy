@@ -5,9 +5,9 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "config-service.fullname" . }}
+  name: {{ template "paas-service.fullname" . }}
   labels:
-    app: {{ template "config-service.name" . }}
+    app: {{ template "paas-service.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
