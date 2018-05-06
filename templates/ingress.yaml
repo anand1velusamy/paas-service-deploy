@@ -28,7 +28,6 @@ spec:
   {{- if .Values.ingress.tls }}
   tls:
   - secretName: {{ .Values.ingress.tls.secretName }}
-    hosts:  
-{{ toYaml .Values.ingress.hosts | indent 4 }}
+    hosts: {{ $host }} 
   {{- end -}}
 {{- end -}}
