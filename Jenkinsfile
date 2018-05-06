@@ -35,7 +35,7 @@ pipeline {
 		  when {
 			expression { fileExists('intuit-paas-update.yml') }
 		  }
-
+          steps {
 			script {
 			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
 			}
@@ -44,12 +44,13 @@ pipeline {
 			sh "heml install --debug --name ${intuitPaas.gitflow.to.helm.name-dev} -f ${intuitPaas.gitflow.to.helm.values-dev} ${intuitPaas.gitflow.to.helm.sets} ."
 		  
 		}
+	  }	
 		
 		stage('Deploy to QA') {
 		  when {
 			expression { fileExists('intuit-paas-update.yml') }
 		  }
-		  
+		  steps {
 			script {
 			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
 			}
@@ -60,6 +61,7 @@ pipeline {
 			sh "heml install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
 
 		    }
+		  }	
 	    }
 	  }
   }
