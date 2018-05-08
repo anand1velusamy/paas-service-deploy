@@ -48,13 +48,11 @@ pipeline {
   			script {
           sh "ls -lsa"  
   			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
-          sh '''
-            rows=$(helm ls | grep paas-service-dev | wc -l)
+           rows=$(helm ls | grep paas-service-dev | wc -l)
             while [ $rows != 0 ];
             do
-            helm del --purge paas-service-dev
+            sh "helm del --purge paas-service-dev"
             done
-          '''
           sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.dev1} -f ${intuitPaas.gitflow.to.helm.dev} ${intuitPaas.gitflow.to.helm.sets} ."
           
   			} 	  
@@ -68,14 +66,12 @@ pipeline {
           steps {
           script {
             intuitPaas = readYaml file: 'intuit-paas-update.yml'
-            sh '''
-             row=$(helm ls | grep paas-service-qa | wc -l)
+            row=$(helm ls | grep paas-service-qa | wc -l)
              while [ $row != 0 ];
              do
-             helm del --purge paas-service-qa
+             sh "helm del --purge paas-service-qa"
              done
-            ''' 
-            sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."            
+             sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."            
           }
        } 
      }
