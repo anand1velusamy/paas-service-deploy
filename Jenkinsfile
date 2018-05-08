@@ -9,8 +9,8 @@ pipeline {
         steps {
           sh "ls -la"
           script {
-            currentBuild.displayName = "Intuit PaaS Properties"
-            currentBuild.description = "Setting up PaaS Variables"
+            currentBuild.displayName = "CD Pipeline"
+            currentBuild.description = "CD Pipeline"
 
             // trim removes leading and trailing whitespace from the string
             intuitPaas = readYaml file: 'intuit-paas.yml'
