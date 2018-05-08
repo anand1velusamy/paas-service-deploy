@@ -50,7 +50,7 @@ pipeline {
             row=$(helm ls | grep paas-service-qa | wc -l)
              while [ $row != 0 ];
              do
-             sh "helm del --purge paas-service-qa"
+             helm del --purge paas-service-qa
              done
 	     '''
              sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."            
