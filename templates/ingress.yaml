@@ -8,9 +8,6 @@ metadata:
   name: {{ template "paas-service.fullname" . }}
   labels:
     app: {{ template "paas-service.name" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
   annotations:
     {{- range $key, $value := .Values.ingress.annotations }}
       {{ $key }}: {{ $value | quote }}
