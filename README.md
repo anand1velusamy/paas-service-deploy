@@ -1,6 +1,6 @@
-# config-service-deploy
+# paas-service-deploy
 
-The deployment repository for the Configuration Service
+The deployment repository for the PAAS Service
 
 # Deployment Types
 
@@ -13,12 +13,6 @@ The deployment repository for the Configuration Service
 * Can be used to build Helm Deployments
 
 ## Deployment
-
-Using kubectl, you can deploy the objects directly:
-
-```
-kubectl create -f k8s-objects/config-server.yml
-```
 
 # Kuberentes Helm
 

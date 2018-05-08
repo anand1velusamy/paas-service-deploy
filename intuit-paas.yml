@@ -1,7 +1,7 @@
 gitflow:
   from:
     git:
-      repo: https://github.intuit.com/services-config/config-service.git
+      repo: https://github.intuit.com/kubernetes-paas/paas-helm-cd
       sha: cd97e9da78bc8957c02d796313ee1efd466b6f05
       branch: master
       author:
@@ -12,5 +12,5 @@ gitflow:
       profiles: dev
       namespace: dev-cd97e9d
       image:
-        tag: anandvelusamy/docker-paas-repo:latest
+        tag: docker.artifactory.a.intuit.com/personal/avelusamy:hello-cto-dev
         key: image.repository

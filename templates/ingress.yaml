@@ -1,13 +1,13 @@
 {{- if .Values.ingress.enabled -}}
-{{- $serviceName := .Chart.Name -}}
+{{- $serviceName := include "paas-service.fullname" . -}}
 {{- $servicePort := .Values.service.port -}}
 {{- $servicePath := .Values.ingress.path -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ template "paas-service.fullname" . }}
   labels:
-    app: {{ .Chart.Name }}
+    app: {{ template "paas-service.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -17,7 +17,7 @@ metadata:
     {{- end }}
 spec:
   rules:
-    {{- $host := .Values.ingress.hosts }}
+    {{ $host := .Values.ingress.hosts }}
     - host: {{ $host }}
       http:
         paths:
@@ -28,6 +28,7 @@ spec:
   {{- if .Values.ingress.tls }}
   tls:
   - secretName: {{ .Values.ingress.tls.secretName }}
-    hosts: {{ $host }} 
+    hosts: 
+         {{ $host }}  
   {{- end -}}
 {{- end -}}

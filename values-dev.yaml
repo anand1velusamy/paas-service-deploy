@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: anandvelusamy/docker-paas-repo
-  tag: latest
+  repository: docker.artifactory.a.intuit.com/personal/avelusamy
+  tag: hello-cto-dev
   pullPolicy: IfNotPresent
 
 service:

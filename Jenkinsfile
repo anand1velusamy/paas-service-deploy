@@ -2,11 +2,7 @@ import static groovy.json.JsonOutput.*
 
 pipeline {
 
-  agent {
-    node {
-      label 'jnlp'
-    }
-}
+  agent any
 
   stages {
         stage('Intuit PaaS Properties') {
@@ -44,9 +40,7 @@ pipeline {
       }
 	  } 
 
-    stage('Multiple Environemnt Deployment') {
-      parallel{ 
-        stage('Deploy to Dev') {
+       stage('Deploy to Dev') {
   		  when {
   			expression { fileExists('intuit-paas-update.yml') }
   		  }
@@ -54,10 +48,16 @@ pipeline {
   			script {
           sh "ls -lsa"  
   			  intuitPaas = readYaml file: 'intuit-paas-update.yml'
-  			}
-  			  
-        sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.dev1} -f ${intuitPaas.gitflow.to.helm.dev} ${intuitPaas.gitflow.to.helm.sets} ."
-  	  
+          sh '''
+            rows=$(helm ls | grep paas-service-dev | wc -l)
+            while [ $rows != 0 ];
+            do
+            helm del --purge paas-service-dev
+            done
+          '''
+          sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.dev1} -f ${intuitPaas.gitflow.to.helm.dev} ${intuitPaas.gitflow.to.helm.sets} ."
+          
+  			} 	  
   		 }
   	 }
 
@@ -68,16 +68,18 @@ pipeline {
           steps {
           script {
             intuitPaas = readYaml file: 'intuit-paas-update.yml'
+            sh '''
+             row=$(helm ls | grep paas-service-qa | wc -l)
+             while [ $row != 0 ];
+             do
+             helm del --purge paas-service-qa
+             done
+            ''' 
+            sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."            
           }
-
-          echo prettyPrint(toJson(intuitPaas))
-
-          sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} ${intuitPaas.gitflow.to.helm.sets} ."
-
-          } 
-        }
-      }  	
-    } 	
-  }
-}
+       } 
+     }
+  }  	
+} 	
+  
  
