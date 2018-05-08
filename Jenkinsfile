@@ -8,7 +8,7 @@ pipeline {
         stage('Intuit PaaS Properties') {
         steps {
           sh "ls -la"
-
+          sh "helm list" 
           script {
             currentBuild.displayName = "Intuit PaaS Properties"
             currentBuild.description = "Setting up PaaS Variables"
