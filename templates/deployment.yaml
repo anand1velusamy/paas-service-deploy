@@ -3,21 +3,16 @@ kind: Deployment
 metadata:
   name: {{ template "paas-service.fullname" . }}
   labels:
-    app: {{ template "paas-service.name" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app: {{ template "paas-service.name" . }}  
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "paas-service.name" . }}
-      release: {{ .Release.Name }}
+      app: {{ template "paas-service.name" . }}      
   template:
     metadata:
       labels:
         app: {{ template "paas-service.name" . }}
-        release: {{ .Release.Name }}
     spec:
       imagePullSecrets:
         - name: artifactory.intuit.com
