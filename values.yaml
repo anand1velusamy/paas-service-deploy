@@ -1,4 +1,4 @@
-# Default values for config-service.
+# Default values for paas-service.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -22,7 +22,7 @@ ingress:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: true
   path: /
-  hosts: qa.paas-preprod.a.intuit.com
+  hosts: default.paas-preprod.a.intuit.com
   tls:
    secretName: paas-preprod.a.intuit.com.tls
 
