@@ -4,9 +4,6 @@ metadata:
   name: {{ template "paas-service.fullname" . }}
   labels:
     app: {{ template "paas-service.name" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -15,4 +12,3 @@ spec:
       name: {{ .Values.service.name }}
   selector:
     app: {{ template "paas-service.name" . }}
-    release: {{ .Release.Name }}
