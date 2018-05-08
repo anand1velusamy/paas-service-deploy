@@ -8,7 +8,6 @@ pipeline {
         stage('Intuit PaaS Properties') {
         steps {
           sh "ls -la"
-          sh "helm list" 
           script {
             currentBuild.displayName = "Intuit PaaS Properties"
             currentBuild.description = "Setting up PaaS Variables"
@@ -36,6 +35,7 @@ pipeline {
           	sh "tar -zxvf  helm-v2.8.2-linux-amd64.tar.gz"
 		sh "mv linux-amd64/helm /usr/local/bin/helm"
 		sh "helm init --upgrade"
+		sh "helm list"
         }
       }
 } 
