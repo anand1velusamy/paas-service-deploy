@@ -19,6 +19,8 @@ import static groovy.json.JsonOutput.*
                         intuitPaas.gitflow.to.helm["name"] = "paas-service-dev"
                         intuitPaas.gitflow.to.helm["values1"] = "values-qa.yaml"
                         intuitPaas.gitflow.to.helm["name1"] = "paas-service-qa"
+                        intuitPaas.gitflow.to.helm["values2"] = "values-e2e.yaml"
+                        intuitPaas.gitflow.to.helm["name2"] = "paas-service-e2e"
                     }
 
                     // Print the entire blob
@@ -65,6 +67,19 @@ import static groovy.json.JsonOutput.*
                             script {
                                 intuitPaas = readYaml file: 'intuit-paas-update.yml'
                                 sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name1} -f ${intuitPaas.gitflow.to.helm.values1} helm-charts-1.0.0.tgz"
+                            }
+                        }
+                    }
+                    stage('Deploy to E2E') {
+                        when {
+                            expression {
+                                fileExists('intuit-paas-update.yml')
+                            }
+                        }
+                        steps {
+                            script {
+                                intuitPaas = readYaml file: 'intuit-paas-update.yml'
+                                sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name2} -f ${intuitPaas.gitflow.to.helm.values2} helm-charts-1.0.0.tgz"
                             }
                         }
                     }
