@@ -1,4 +1,4 @@
-name: paas-service
+name: helm-charts
 description: A Helm chart for Intuit Configuration service in Kubernetes.
 version: 1.0.0
 maintainers:
