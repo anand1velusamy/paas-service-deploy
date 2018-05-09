@@ -49,7 +49,7 @@ import static groovy.json.JsonOutput.*
                     script {
                         intuitPaas = readYaml file: 'intuit-paas-update.yml'
                         sh "helm package ./helm-charts"
-                        sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} helm-charts.1.0.0.tgz"
+                        sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} helm-charts-1.0.0.tgz"
                     }
                 }
             }
