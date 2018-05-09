@@ -39,31 +39,34 @@ import static groovy.json.JsonOutput.*
                     }
                 }
             }
-
-            stage('Deploy to Dev') {
-                when {
-                    expression {
-                        fileExists('intuit-paas-update.yml')
+            stage('Deployment') {
+                parallel {
+                    stage('Deploy to Dev') {
+                        when {
+                            expression {
+                                fileExists('intuit-paas-update.yml')
+                            }
+                        }
+                        steps {
+                            script {
+                                intuitPaas = readYaml file: 'intuit-paas-update.yml'
+                                sh "helm package ./helm-charts"
+                                sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} helm-charts-1.0.0.tgz"
+                            }
+                        }
                     }
-                }
-                steps {
-                    script {
-                        intuitPaas = readYaml file: 'intuit-paas-update.yml'
-                        sh "helm package ./helm-charts"
-                        sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} helm-charts-1.0.0.tgz"
-                    }
-                }
-            }
-            stage('Deploy to QA') {
-                when {
-                    expression {
-                        fileExists('intuit-paas-update.yml')
-                    }
-                }
-                steps {
-                    script {
-                        intuitPaas = readYaml file: 'intuit-paas-update.yml'
-                        sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name1} -f ${intuitPaas.gitflow.to.helm.values1} helm-charts-1.0.0.tgz"
+                    stage('Deploy to QA') {
+                        when {
+                            expression {
+                                fileExists('intuit-paas-update.yml')
+                            }
+                        }
+                        steps {
+                            script {
+                                intuitPaas = readYaml file: 'intuit-paas-update.yml'
+                                sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name1} -f ${intuitPaas.gitflow.to.helm.values1} helm-charts-1.0.0.tgz"
+                            }
+                        }
                     }
                 }
             }
