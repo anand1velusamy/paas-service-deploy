@@ -17,7 +17,8 @@ import static groovy.json.JsonOutput.*
                         intuitPaas.gitflow.to.helm["values"] = "values-dev.yaml"
                         intuitPaas.gitflow.to.helm["sets"] = "--set ${intuitPaas.gitflow.to.helm.image.key}=${intuitPaas.gitflow.to.helm.image.tag}"
                         intuitPaas.gitflow.to.helm["name"] = "paas-service-dev"
-
+                        intuitPaas.gitflow.to.helm["values1"] = "values-qa.yaml"
+                        intuitPaas.gitflow.to.helm["name1"] = "paas-service-qa"
                     }
 
                     // Print the entire blob
@@ -50,6 +51,19 @@ import static groovy.json.JsonOutput.*
                         intuitPaas = readYaml file: 'intuit-paas-update.yml'
                         sh "helm package ./helm-charts"
                         sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} helm-charts-1.0.0.tgz"
+                    }
+                }
+            }
+            stage('Deploy to Dev') {
+                when {
+                    expression {
+                        fileExists('intuit-paas-update.yml')
+                    }
+                }
+                steps {
+                    script {
+                        intuitPaas = readYaml file: 'intuit-paas-update.yml'
+                        sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name1} -f ${intuitPaas.gitflow.to.helm.values1} helm-charts-1.0.0.tgz"
                     }
                 }
             }

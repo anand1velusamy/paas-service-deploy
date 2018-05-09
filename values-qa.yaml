@@ -1,0 +1,45 @@
+# Default values for config-service.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: docker.artifactory.a.intuit.com/personal/avelusamy
+  tag: hello-cto-dev
+  pullPolicy: IfNotPresent
+
+service:
+  name: paas
+  type: ClusterIP
+  port: 8080
+  healthPath: /
+
+ingress:
+  enabled: true
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: true
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: true
+  path: /
+  hosts: dev-env.paas-preprod.a.intuit.com
+  tls:
+   secretName: paas-preprod.a.intuit.com.tls
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 250m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
