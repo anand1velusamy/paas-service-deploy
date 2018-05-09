@@ -54,7 +54,7 @@ import static groovy.json.JsonOutput.*
                     }
                 }
             }
-            stage('Deploy to Dev') {
+            stage('Deploy to QA') {
                 when {
                     expression {
                         fileExists('intuit-paas-update.yml')
