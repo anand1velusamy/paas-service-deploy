@@ -38,6 +38,7 @@ spec:
 {{ toYaml .Values.resources | indent 12 }}
     {{- if .Values.nodeSelector }}
     {{- if .Values.nodeSelector }}
+    {{- end }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
     {{- end }}
