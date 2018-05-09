@@ -3,12 +3,12 @@ kind: Deployment
 metadata:
   name: {{ template "paas-service.fullname" . }}
   labels:
-    app: {{ template "paas-service.name" . }}  
+    app: {{ template "paas-service.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "paas-service.name" . }}      
+      app: {{ template "paas-service.name" . }}
   template:
     metadata:
       labels:
@@ -34,8 +34,6 @@ spec:
           #  httpGet:
           #    path: {{ .Values.service.healthPath }}
           #    port: {{ .Values.service.port }}
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
     {{- if .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}

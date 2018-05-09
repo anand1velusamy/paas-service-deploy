@@ -22,7 +22,7 @@ ingress:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: true
   path: /
-  hosts: dev.paas-preprod.a.intuit.com
+  hosts: dev-env.paas-preprod.a.intuit.com
   tls:
    secretName: paas-preprod.a.intuit.com.tls
 
@@ -43,4 +43,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
