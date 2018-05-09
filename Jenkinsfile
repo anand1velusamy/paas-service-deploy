@@ -48,7 +48,8 @@ import static groovy.json.JsonOutput.*
                 steps {
                     script {
                         intuitPaas = readYaml file: 'intuit-paas-update.yml'
-                        sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values}  ${intuitPaas.gitflow.to.helm.sets} ."
+                        sh "helm package ."
+                        sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} paas-service.1.0.0.tgz"                                          
                     }
                 }
             }
