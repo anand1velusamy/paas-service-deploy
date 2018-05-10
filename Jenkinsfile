@@ -44,6 +44,13 @@ import static groovy.json.JsonOutput.*
                     }
                 }
             }
+            stage('Promotion') {
+                steps {
+                    script {
+                        input 'Shall I Deploy the Helm chart in Dev/QA/E2E ?'
+                    }
+                }
+            }
             stage('Deployment') {
                 parallel {
                     stage('Deploy to Dev') {
