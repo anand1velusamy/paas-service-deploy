@@ -27,17 +27,20 @@ import static groovy.json.JsonOutput.*
                     echo prettyPrint(toJson(intuitPaas))
                     writeYaml file: 'intuit-paas-update.yml', data: intuitPaas
 
+                    //Helm Installation
+                    sh "wget https://storage.googleapis.com/kubernetes-helm/helm-v2.7.2-linux-amd64.tar.gz"
+                    sh "tar -zxvf  helm-v2.7.2-linux-amd64.tar.gz"
+                    sh "mv linux-amd64/helm /usr/local/bin/helm"
+                    sh "helm init --upgrade"
+                    sh "helm list"
+
                 }
             }
 
-            stage('Helm Install') {
+            stage('TEP') {
                 steps {
                     script {
-                        sh "wget https://storage.googleapis.com/kubernetes-helm/helm-v2.7.2-linux-amd64.tar.gz"
-                        sh "tar -zxvf  helm-v2.7.2-linux-amd64.tar.gz"
-                        sh "mv linux-amd64/helm /usr/local/bin/helm"
-                        sh "helm init --upgrade"
-                        sh "helm list"
+                        sh 'python ./tep.py'
                     }
                 }
             }
@@ -79,6 +82,7 @@ import static groovy.json.JsonOutput.*
                         steps {
                             script {
                                 intuitPaas = readYaml file: 'intuit-paas-update.yml'
+                                sh "helm package ./helm-charts"
                                 sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name2} -f ${intuitPaas.gitflow.to.helm.values2} helm-charts-1.0.0.tgz"
                             }
                         }
