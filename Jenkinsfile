@@ -92,7 +92,6 @@ import static groovy.json.JsonOutput.*
                             return publish
                         }
                     } 
-                }
                     steps {
                         when {
                             expression {
@@ -110,3 +109,4 @@ import static groovy.json.JsonOutput.*
                         }
                     }
                 }
+            }  
