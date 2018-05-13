@@ -21,6 +21,7 @@ import static groovy.json.JsonOutput.*
                         intuitPaas.gitflow.to.helm["name1"] = "paas-service-qa"
                         intuitPaas.gitflow.to.helm["values2"] = "values-e2e.yaml"
                         intuitPaas.gitflow.to.helm["name2"] = "paas-service-e2e"
+                        msg = "test"
                     }
 
                     // Print the entire blob
