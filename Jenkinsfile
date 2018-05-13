@@ -92,8 +92,7 @@ import static groovy.json.JsonOutput.*
                             return publish
                         }
                     }
-                }
-                
+                                
                     when {
                         expression {
                             fileExists('intuit-paas-update.yml')
@@ -110,3 +109,4 @@ import static groovy.json.JsonOutput.*
                 }
             }
         }
+    }    
