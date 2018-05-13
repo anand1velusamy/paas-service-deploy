@@ -74,7 +74,7 @@ import static groovy.json.JsonOutput.*
                      }
                   } 
                 }
-                    stage("Deploy pages") {
+                    stage("Deploy to E2E") {
                     when {
                         expression {
                             boolean publish = false
@@ -92,15 +92,14 @@ import static groovy.json.JsonOutput.*
                             return publish
                         }
                     } 
-
-                    stage('Deploy to E2E') {
+                }
+                    steps {
                         when {
                             expression {
                                 fileExists('intuit-paas-update.yml')
                             }
                         }
                         
-                        steps {
                             script {
                                 sh "kubectl config set-context paas-preprod.a.intuit.com"
                                 intuitPaas = readYaml file: 'intuit-paas-update.yml'
@@ -111,4 +110,3 @@ import static groovy.json.JsonOutput.*
                         }
                     }
                 }
-            }  
