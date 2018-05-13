@@ -74,31 +74,25 @@ import static groovy.json.JsonOutput.*
                 }
             }
             stage("Deploy to E2E") {
+                when {
+                    expression {
+                        fileExists('intuit-paas-update.yml')
+                        boolean publish = false
+                        if (env.DEPLOYPAGES == "true") {
+                            return true
+                        }
+                        try {
+                            timeout(time: 1, unit: 'MINUTES') {
+                                input 'Promote?'
+                                publish = true
+                            }
+                        } catch (final ignore) {
+                            publish = false
+                        }
+                        return publish
+                    }
+                }
                 steps {
-                    when {
-                        expression {
-                            boolean publish = false
-                            if (env.DEPLOYPAGES == "true") {
-                                return true
-                            }
-                            try {
-                                timeout(time: 1, unit: 'MINUTES') {
-                                    input 'Promote?'
-                                    publish = true
-                                }
-                            } catch (final ignore) {
-                                publish = false
-                            }
-                            return publish
-                        }
-                    }
-                                
-                    when {
-                        expression {
-                            fileExists('intuit-paas-update.yml')
-                        }
-                    }
-
                     script {
                         sh "kubectl config set-context paas-preprod.a.intuit.com"
                         intuitPaas = readYaml file: 'intuit-paas-update.yml'
@@ -109,4 +103,4 @@ import static groovy.json.JsonOutput.*
                 }
             }
         }
-    }    
+    }
