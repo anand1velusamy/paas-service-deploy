@@ -4,6 +4,10 @@ import static groovy.json.JsonOutput.*
 
         agent any
         
+        parameters {
+        booleanParam(defaultValue: false, description: 'Deploy to E2E?', name: 'deployPages')        
+        }
+
         stages {
             stage('Intuit PaaS Properties') {
                 steps {
@@ -65,22 +69,34 @@ import static groovy.json.JsonOutput.*
                                 intuitPaas = readYaml file: 'intuit-paas-update.yml'
                                 sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name1} -f ${intuitPaas.gitflow.to.helm.values1} helm-charts-1.0.0.tgz"
                                 sh 'python ./tep.py'
-                            }
-                            script {
-                                msg = input message: 'User input required',
-                                parameters: [choice(name: 'Deploy to E2E', choices: 'no\nyes', description: 'Choose "yes" if you want to deploy this build')]                                                        
-                            }
+                            }                            
                         }
                      }
                   } 
-                }  
+                }
+                    stage("Deploy pages") {
+                    when {
+                        expression {
+                            boolean publish = false
+                            if (env.DEPLOYPAGES == "true") {
+                                return true
+                            }
+                            try {
+                                timeout(time: 1, unit: 'MINUTES') {
+                                    input 'Deploy to E2E?'
+                                    publish = true
+                                }
+                            } catch (final ignore) {
+                                publish = false
+                            }
+                            return publish
+                        }
+                    } 
+
                     stage('Deploy to E2E') {
                         when {
                             expression {
                                 fileExists('intuit-paas-update.yml')
-                                if ($msg == yes){
-                                return yes
-                                }
                             }
                         }
                         
