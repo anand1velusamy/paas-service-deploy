@@ -36,14 +36,6 @@ import static groovy.json.JsonOutput.*
 
                 }
             }
-
-            stage('TEP') {
-                steps {
-                    script {
-                        sh 'python ./tep.py'
-                    }
-                }
-            }
             stage('Deployment') {
                 parallel {
                     stage('Deploy to Dev') {
@@ -54,10 +46,10 @@ import static groovy.json.JsonOutput.*
                         }
                         steps {
                             script {
-                                sh "kubectl config set-context k8s.paas-dev.a.intuit.com"
                                 intuitPaas = readYaml file: 'intuit-paas-update.yml'
                                 sh "helm package ./helm-charts"
                                 sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} helm-charts-1.0.0.tgz"
+                                sh 'python ./tep.py'
                             }
                         }
                     }
@@ -69,9 +61,24 @@ import static groovy.json.JsonOutput.*
                         }
                         steps {
                             script {
-                                sh "kubectl config set-context paas-preprod.a.intuit.com"
                                 intuitPaas = readYaml file: 'intuit-paas-update.yml'
                                 sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name1} -f ${intuitPaas.gitflow.to.helm.values1} helm-charts-1.0.0.tgz"
+                                sh 'python ./tep.py'
+                            }
+                            def answer = promotion()
+                            echo "Shall I deploy in E2E? $answer"
+                            echo 'done'
+
+                            def promotion() {
+                                try {
+                                    timeout(time: 1, unit: 'MINUTES') {
+                                        def keep = input message: 'Shall I deploy in E2E?',
+                                            parameters: [booleanParam(defaultValue: false, description: '', name: 'Production')]
+                                        return keep
+                                    }
+                                } catch (e) {
+                                    return false
+                                }
                             }
                         }
                     }
@@ -83,9 +90,11 @@ import static groovy.json.JsonOutput.*
                         }
                         steps {
                             script {
+                                sh "kubectl config set-context paas-preprod.a.intuit.com"
                                 intuitPaas = readYaml file: 'intuit-paas-update.yml'
                                 sh "helm package ./helm-charts"
                                 sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name2} -f ${intuitPaas.gitflow.to.helm.values2} helm-charts-1.0.0.tgz"
+                                sh 'python ./tep.py'
                             }
                         }
                     }
