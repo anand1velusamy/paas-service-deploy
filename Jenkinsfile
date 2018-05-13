@@ -67,18 +67,16 @@ import static groovy.json.JsonOutput.*
                             }
                             script {
                                 msg = input message: 'User input required',
-                                parameters: [choice(name: 'Deploy to E2E', choices: 'no\nyes', description: 'Choose "yes" if you want to deploy this build')] 
-                                if (msg == 'no'){
-                                  exit
-                                  }                            
+                                parameters: [choice(name: 'Deploy to E2E', choices: 'no\nyes', description: 'Choose "yes" if you want to deploy this build')]                                                        
                             }
                         }
                     }
-                    if (msg == 'yes'){  
+                    
                     stage('Deploy to E2E') {
                         when {
                             expression {
                                 fileExists('intuit-paas-update.yml')
+                                msg == yes
                             }
                         }
                         steps {
