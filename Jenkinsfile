@@ -83,7 +83,7 @@ import static groovy.json.JsonOutput.*
                             }
                             try {
                                 timeout(time: 1, unit: 'MINUTES') {
-                                    input 'Deploy to E2E?'
+                                    input 'Promote?'
                                     publish = true
                                 }
                             } catch (final ignore) {
@@ -93,7 +93,7 @@ import static groovy.json.JsonOutput.*
                         }
                     }
                 }
-                steps {
+                
                     when {
                         expression {
                             fileExists('intuit-paas-update.yml')
@@ -110,4 +110,3 @@ import static groovy.json.JsonOutput.*
                 }
             }
         }
-    }
