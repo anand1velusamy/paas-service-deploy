@@ -3,7 +3,7 @@ import static groovy.json.JsonOutput.*
     pipeline {
 
         agent any
-
+        
         stages {
             stage('Intuit PaaS Properties') {
                 steps {
@@ -78,9 +78,10 @@ import static groovy.json.JsonOutput.*
                         when {
                             expression {
                                 fileExists('intuit-paas-update.yml')
-                                msg == yes
+                                
                             }
                         }
+                        if ($msg == yes)
                         steps {
                             script {
                                 sh "kubectl config set-context paas-preprod.a.intuit.com"
