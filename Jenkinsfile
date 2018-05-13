@@ -93,4 +93,3 @@ import static groovy.json.JsonOutput.*
             }
         }
     }
-}  
