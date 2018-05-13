@@ -65,23 +65,16 @@ import static groovy.json.JsonOutput.*
                                 sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name1} -f ${intuitPaas.gitflow.to.helm.values1} helm-charts-1.0.0.tgz"
                                 sh 'python ./tep.py'
                             }
-                            def answer = promotion()
-                            echo "Shall I deploy in E2E? $answer"
-                            echo 'done'
-
-                            def promotion() {
-                                try {
-                                    timeout(time: 1, unit: 'MINUTES') {
-                                        def keep = input message: 'Shall I deploy in E2E?',
-                                            parameters: [booleanParam(defaultValue: false, description: '', name: 'Production')]
-                                        return keep
-                                    }
-                                } catch (e) {
-                                    return false
-                                }
+                            script {
+                                msg = input message: 'User input required',
+                                parameters: [choice(name: 'Deploy to E2E', choices: 'no\nyes', description: 'Choose "yes" if you want to deploy this build')] 
+                                if (msg == 'no'){
+                                  exit
+                                  }                            
                             }
                         }
                     }
+                    if (msg == 'yes'){  
                     stage('Deploy to E2E') {
                         when {
                             expression {
@@ -102,3 +95,4 @@ import static groovy.json.JsonOutput.*
             }
         }
     }
+}  
