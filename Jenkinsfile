@@ -78,10 +78,12 @@ import static groovy.json.JsonOutput.*
                         when {
                             expression {
                                 fileExists('intuit-paas-update.yml')
-                                
+                                if ($msg == yes){
+                                return yes
+                                }
                             }
                         }
-                        if ($msg == yes)
+                        
                         steps {
                             script {
                                 sh "kubectl config set-context paas-preprod.a.intuit.com"
