@@ -50,6 +50,7 @@ import static groovy.json.JsonOutput.*
                         }
                         steps {
                             script {
+                                sh "kubectl config set-context paas-preprod.a.intuit.com"
                                 intuitPaas = readYaml file: 'intuit-paas-update.yml'
                                 sh "helm package ./helm-charts"
                                 sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name} -f ${intuitPaas.gitflow.to.helm.values} helm-charts-1.0.0.tgz"
@@ -65,6 +66,7 @@ import static groovy.json.JsonOutput.*
                         }
                         steps {
                             script {
+                                sh "kubectl config set-context paas-preprod.a.intuit.com"
                                 intuitPaas = readYaml file: 'intuit-paas-update.yml'
                                 sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name1} -f ${intuitPaas.gitflow.to.helm.values1} helm-charts-1.0.0.tgz"
                                 sh 'python ./tep.py'
@@ -95,6 +97,7 @@ import static groovy.json.JsonOutput.*
                 steps {
                     script {
                         intuitPaas = readYaml file: 'intuit-paas-update.yml'
+                        sh "kubectl config set-context paas.a.intuit.com"
                         sh "helm package ./helm-charts"
                         sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name2} -f ${intuitPaas.gitflow.to.helm.values2} helm-charts-1.0.0.tgz"
                         sh 'python ./tep.py'
