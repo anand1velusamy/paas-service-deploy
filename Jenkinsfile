@@ -3,9 +3,9 @@ import static groovy.json.JsonOutput.*
     pipeline {
 
         agent any
-        
+
         parameters {
-        booleanParam(defaultValue: false, description: 'Deploy to E2E?', name: 'deployPages')        
+            booleanParam(defaultValue: false, description: 'Deploy to E2E?', name: 'deployPages')
         }
 
         stages {
@@ -25,7 +25,6 @@ import static groovy.json.JsonOutput.*
                         intuitPaas.gitflow.to.helm["name1"] = "paas-service-qa"
                         intuitPaas.gitflow.to.helm["values2"] = "values-e2e.yaml"
                         intuitPaas.gitflow.to.helm["name2"] = "paas-service-e2e"
-                        msg = "test"
                     }
 
                     // Print the entire blob
@@ -69,12 +68,13 @@ import static groovy.json.JsonOutput.*
                                 intuitPaas = readYaml file: 'intuit-paas-update.yml'
                                 sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name1} -f ${intuitPaas.gitflow.to.helm.values1} helm-charts-1.0.0.tgz"
                                 sh 'python ./tep.py'
-                            }                            
+                            }
                         }
-                     }
-                  } 
+                    }
                 }
-                    stage("Deploy to E2E") {
+            }
+            stage("Deploy to E2E") {
+                steps {
                     when {
                         expression {
                             boolean publish = false
@@ -91,22 +91,23 @@ import static groovy.json.JsonOutput.*
                             }
                             return publish
                         }
-                    } 
-                    steps {
-                        when {
-                            expression {
-                                fileExists('intuit-paas-update.yml')
-                            }
-                        }
-                        
-                            script {
-                                sh "kubectl config set-context paas-preprod.a.intuit.com"
-                                intuitPaas = readYaml file: 'intuit-paas-update.yml'
-                                sh "helm package ./helm-charts"
-                                sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name2} -f ${intuitPaas.gitflow.to.helm.values2} helm-charts-1.0.0.tgz"
-                                sh 'python ./tep.py'
-                            }
-                        }
                     }
                 }
-            }  
+                steps {
+                    when {
+                        expression {
+                            fileExists('intuit-paas-update.yml')
+                        }
+                    }
+
+                    script {
+                        sh "kubectl config set-context paas-preprod.a.intuit.com"
+                        intuitPaas = readYaml file: 'intuit-paas-update.yml'
+                        sh "helm package ./helm-charts"
+                        sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name2} -f ${intuitPaas.gitflow.to.helm.values2} helm-charts-1.0.0.tgz"
+                        sh 'python ./tep.py'
+                    }
+                }
+            }
+        }
+    }
