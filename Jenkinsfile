@@ -71,8 +71,9 @@ import static groovy.json.JsonOutput.*
                                 parameters: [choice(name: 'Deploy to E2E', choices: 'no\nyes', description: 'Choose "yes" if you want to deploy this build')]                                                        
                             }
                         }
-                    }
-                    
+                     }
+                  } 
+                }  
                     stage('Deploy to E2E') {
                         when {
                             expression {
@@ -91,6 +92,4 @@ import static groovy.json.JsonOutput.*
                         }
                     }
                 }
-            }
-        }
-    }
+            }  
