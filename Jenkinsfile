@@ -5,7 +5,7 @@ import static groovy.json.JsonOutput.*
         agent any
 
         parameters {
-            booleanParam(defaultValue: false, description: 'Deploy to E2E?', name: 'deployPages')
+            booleanParam(defaultValue: false, description: 'Deploy to E2E?', name: 'DeployPages')
         }
 
         stages {
@@ -94,7 +94,6 @@ import static groovy.json.JsonOutput.*
                 }
                 steps {
                     script {
-                        sh "kubectl config set-context paas-preprod.a.intuit.com"
                         intuitPaas = readYaml file: 'intuit-paas-update.yml'
                         sh "helm package ./helm-charts"
                         sh "helm install --debug --name ${intuitPaas.gitflow.to.helm.name2} -f ${intuitPaas.gitflow.to.helm.values2} helm-charts-1.0.0.tgz"
